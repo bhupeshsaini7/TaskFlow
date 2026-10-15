@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h3 mb-0">Dashboard</h1>
+        <p class="text-muted mb-0">{{ today.strftime('%A, %d %B %Y') }}</p>
+    </div>
+    <a href="{{ url_for('add_task') }}" class="btn btn-primary">+ Add Task</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
+        <div class="card shadow-sm h-100 border-start border-primary border-4">
+            <div class="card-body">
+                <div class="text-muted small">Total Tasks</div>
+                <div class="display-6 fw-bold">{{ total }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card shadow-sm h-100 border-start border-warning border-4">
+            <div class="card-body">
+                <div class="text-muted small">Pending</div>
+                <div class="display-6 fw-bold">{{ pending }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card shadow-sm h-100 border-start border-success border-4">
+            <div class="card-body">
+                <div class="text-muted small">Completed</div>
+                <div class="display-6 fw-bold">{{ completed }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-2">
+            <span class="fw-semibold">Overall progress</span>
+            <span class="text-muted">{{ percent_done }}% complete</span>
+        </div>
+        <div class="progress" style="height: 12px;">
+            <div class="progress-bar bg-success" role="progressbar"
+                 style="width: {{ percent_done }}%"
+                 aria-valuenow="{{ percent_done }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Next pending tasks</h2>
+        {% if upcoming %}
+            <ul class="list-group list-group-flush">
+                {% for t in upcoming %}
+                    <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center px-0">
+                        <span>{{ t.title }}</span>
+                        <span>
+                            {% if t.due_date %}
+                                {% if t.due_date < today %}
+                                    <span class="badge text-bg-danger">Overdue · {{ t.due_date.strftime('%d %b %Y') }}</span>
+                                {% else %}
+                                    <span class="badge text-bg-light border">Due {{ t.due_date.strftime('%d %b %Y') }}</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge text-bg-light border">No due date</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted mb-0">
+                {% if total == 0 %}
+                    You have no tasks yet. <a href="{{ url_for('add_task') }}">Add your first one.</a>
+                {% else %}
+                    Nothing pending. Great job!
+                {% endif %}
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
