@@ -2,6 +2,19 @@
 
 TaskFlow is a simple task management web application built with Python, Flask, MySQL, and Bootstrap. It helps users organize daily tasks, track their progress, and manage pending and completed work through a clean dashboard.
 
+
+## 📸 Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Tasks
+![Tasks](screenshots/tasks.png)
+
+### Add Task
+![Add Task](screenshots/add-task.png)
+
+
 ## Features
 
 - Add new tasks with a title, description, and due date
